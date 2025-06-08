@@ -1,0 +1,11 @@
+.header {
+  display: flex;
+  align-items: center;
+  background-color: var(--secondary-bg-color);
+  padding: 24px;
+  color: var(--text-secondary-color);
+}
+
+.header_title {
+  flex: 1;
+}

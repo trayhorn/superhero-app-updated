@@ -1,0 +1,7 @@
+.loadMoreButton {
+  display: block;
+  margin: var(--spacing-md) auto;
+  width: 100%;
+  border: none;
+  padding-block: var(--spacing-sm);
+}

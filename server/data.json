@@ -1,0 +1,79 @@
+[
+	{
+		"nickname": "Batman",
+		"real_name": "Bruce Wayne",
+		"origin_description": "A wealthy socialite who witnessed the murder of his parents and devoted his life to fighting crime in Gotham City as the vigilante known as Batman.",
+		"superpowers": "Peak human conditioning, martial arts expert, high intellect, master detective skills, expert strategist, access to high-tech gadgets and vehicles.",
+		"catch_phrase": "I am the night."
+	},
+	{
+		"nickname": "Superman",
+		"real_name": "Clark Kent",
+		"origin_description": "An alien from the planet Krypton, raised in Smallville on Earth, who dedicates his life to protecting humanity and upholding justice as Superman.",
+		"superpowers": "Super strength, flight, heat vision, x-ray vision, invulnerability, super speed, super hearing, freeze breath.",
+		"catch_phrase": "Truth, justice, and the American way!"
+	},
+	{
+		"nickname": "Wonder Woman",
+		"real_name": "Diana Prince",
+		"origin_description": "Amazonian warrior princess from Themyscira, sent to the world of men to promote peace and justice with her divine powers and combat skills.",
+		"superpowers": "Super strength, flight, combat skill, expert hand-to-hand combatant, Lasso of Truth, divine wisdom, enhanced durability and healing.",
+		"catch_phrase": "In the name of all that is good, your wrath upon this world is over!"
+	},
+	{
+		"nickname": "Flash",
+		"real_name": "Barry Allen",
+		"origin_description": "Forensic scientist struck by a lightning bolt infused with chemicals, granting him super-speed.",
+		"superpowers": "Super speed, time travel, phasing through objects, rapid healing",
+		"catch_phrase": "Fastest man alive!",
+		"images": []
+	},
+	{
+		"nickname": "Green Lantern",
+		"real_name": "Hal Jordan",
+		"origin_description": "An astronaut chosen by a sentient ring to join the Green Lantern Corps and protect the universe.",
+		"superpowers": "Power ring constructs, flight, energy projection, universal translate",
+		"catch_phrase": "In brightest day, in blackest night, no evil shall escape my sight!",
+		"images": []
+	},
+	{
+		"nickname": "Spider-Man",
+		"real_name": "Peter Parker",
+		"origin_description": "A young man bitten by a radioactive spider who fights crime in New York City while balancing everyday life.",
+		"superpowers": "Wall-crawling, spider-sense, super strength, agility, web-shooting",
+		"catch_phrase": "With great power comes great responsibility.",
+		"images": []
+	},
+	{
+		"nickname": "Iron Man",
+		"real_name": "Tony Stark",
+		"origin_description": "Genius billionaire who built a powered armor suit to save his life and protect the world.",
+		"superpowers": "Powered armor suit: flight, repulsor blasts, AI assistance, super strength",
+		"catch_phrase": "I am Iron Man.",
+		"images": []
+	},
+	{
+		"nickname": "Thor",
+		"real_name": "Thor Odinson",
+		"origin_description": "Norse god of thunder from Asgard, wielding the magic hammer Mjolnir.",
+		"superpowers": "Godlike strength, control over lightning and storms, longevity, flight via Mjolnir",
+		"catch_phrase": "For Asgard!",
+		"images": []
+	},
+	{
+		"nickname": "Hulk",
+		"real_name": "Bruce Banner",
+		"origin_description": "A scientist exposed to gamma radiation who transforms into the Hulk when enraged.",
+		"superpowers": "Unlimited strength based on rage, regeneration, high resistance to injury",
+		"catch_phrase": "Hulk smash!",
+		"images": []
+	},
+	{
+		"nickname": "Captain America",
+		"real_name": "Steve Rogers",
+		"origin_description": "A World War II veteran enhanced by a super-soldier serum, now a symbol of justice and freedom.",
+		"superpowers": "Enhanced strength, agility, endurance, expert tactician, uses vibranium shield",
+		"catch_phrase": "I can do this all day.",
+		"images": []
+	}
+]

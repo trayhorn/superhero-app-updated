@@ -1,0 +1,6 @@
+.createHeroBtn {
+  display: block;
+  width: 100%;
+  border: none;
+  padding-block: var(--spacing-sm);
+}
