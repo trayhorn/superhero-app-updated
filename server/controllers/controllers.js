@@ -11,7 +11,7 @@ const getAllHeroes = async (req, res) => {
 	const skip = (page - 1) * limit;
 
   const [superheroes, total] = await Promise.all([
-		Superhero.find({}, "_id nickname images", { skip, limit: Number(limit) }),
+		Superhero.find({}, "_id nickname images", { skip, limit: Number(limit) }).sort({ createdAt: -1 }),
 		Superhero.countDocuments(),
 	]);
 
@@ -30,10 +30,17 @@ const getHeroById = async (req, res) => {
 
 const addHero = async (req, res) => {
 	const files = req.files;
+	const { nickname: newHeroNickname } = req.body;
+
+	const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+	const duplicateHero = await Superhero.findOne({
+		nickname: { $regex: `^${escapeRegex(newHeroNickname)}$`, $options: "i" },
+	});
+	if (duplicateHero) throw HttpError(400, "The hero with this nickname already exists");
 
 	const newHero = await Superhero.create({ ...req.body, images: [] });
-	const heroDirName = newHero._id.toString();
 
+	const heroDirName = newHero._id.toString();
 	const imagesSaveDir = path.join(dirname, "../", "public", "images", heroDirName);
 
 	await fs.mkdir(imagesSaveDir, { recursive: true });

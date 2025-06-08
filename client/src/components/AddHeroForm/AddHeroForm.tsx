@@ -1,12 +1,23 @@
 import type { superHero } from "../../types/types";
 import styles from "./AddHeroForm.module.css";
 import { Formik, Form } from "formik";
+import type { FormikHelpers } from "formik";
 import * as Yup from "yup";
+import { AxiosError } from "axios";
 import { TextField, Button } from "@mui/material";
-import { addHeroRequest } from "../../api";
+import { addHeroRequest, getAllHerousRequest } from "../../api";
+
+interface HeroFormValues {
+	nickname: string;
+	real_name: string;
+	origin_description: string;
+	superpowers: string;
+	catch_phrase: string;
+	images: FileList | null;
+}
 
 type Form = {
-	handleHeroAdd: (newHero: superHero) => void;
+	handleHeroesUpdate: (allHeroes: superHero[]) => void;
 	closeModal: () => void;
 };
 
@@ -18,16 +29,44 @@ const validationSchema = Yup.object({
 	catch_phrase: Yup.string().required("Catch phrase is required"),
 });
 
-export default function AddHeroForm({ handleHeroAdd, closeModal }: Form) {
+export default function AddHeroForm({ handleHeroesUpdate, closeModal }: Form) {
+	const handleFileChange = (
+		e: React.ChangeEvent<HTMLInputElement>,
+		setFieldValue: FormikHelpers<HeroFormValues>["setFieldValue"]
+	) => {
+		const files = e.currentTarget.files;
+		if (files) {
+			console.log("Files:", files);
+
+			const acceptedFormats = [
+				"image/png",
+				"image/jpeg",
+				"image/jpg",
+				"image/webp",
+			];
+
+			for (const file of files) {
+				if (!acceptedFormats.includes(file.type)) {
+					alert(
+						"The uploaded file format is not supported. Please upload images in PNG, JPEG, JPG, or WEBP format."
+					);
+					return;
+				}
+			}
+
+			setFieldValue("images", files);
+		}
+	};
+
 	return (
-		<Formik
+		<Formik<HeroFormValues>
 			initialValues={{
 				nickname: "",
 				real_name: "",
 				origin_description: "",
 				superpowers: "",
 				catch_phrase: "",
-				images: [],
+				images: null,
 			}}
 			validationSchema={validationSchema}
 			onSubmit={async (values, actions) => {
@@ -45,11 +84,16 @@ export default function AddHeroForm({ handleHeroAdd, closeModal }: Form) {
 					}
 				}
 
-				const { data } = await addHeroRequest(formData);
-				handleHeroAdd(data);
-
-				closeModal();
-				actions.resetForm();
+				try {
+					await addHeroRequest(formData);
+					const { data } = await getAllHerousRequest(1);
+					handleHeroesUpdate(data.superheroes);
+					closeModal();
+					actions.resetForm();
+				} catch (error) {
+					const err = error as AxiosError<{ message: string }>;
+					alert(err.response?.data?.message || "Error adding hero");
+				}
 			}}
 		>
 			{({
@@ -135,16 +179,12 @@ export default function AddHeroForm({ handleHeroAdd, closeModal }: Form) {
 					/>
 
 					<input
-						accept="image/*"
+						accept="image/png,image/jpeg,image/jpg,image/webp"
 						id="images"
 						multiple
 						type="file"
 						style={{ marginTop: 16, marginBottom: 8 }}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-							if (e.currentTarget.files) {
-								setFieldValue("images", e.currentTarget.files);
-							}
-						}}
+						onChange={(e) => handleFileChange(e, setFieldValue)}
 					/>
 
 					<Button

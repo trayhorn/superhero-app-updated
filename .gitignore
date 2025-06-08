@@ -25,6 +25,7 @@ Thumbs.db
 server/node_modules/
 server/dist/
 server/.env
+server/data.json
 
 # Client-specific ignores
 client/node_modules/

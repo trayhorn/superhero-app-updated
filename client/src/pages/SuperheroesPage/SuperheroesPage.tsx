@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import {useModal} from "../../hooks/useModal";
 import HeroGallery from "../../components/HeroGallery/HeroGallery";
 import AddHeroForm from "../../components/AddHeroForm/AddHeroForm";
 import type { superHero } from "../../types/types";
@@ -9,12 +10,10 @@ import styles from "./SuperheroesPage.module.css";
 import Loader from "../../components/Loader/Loader";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 import EmptyGallery from "../../components/EmptyGallery/EmptyGallery";
-import ReactModal from "../../components/ReactModal/ReactModal";
-
+import ModalComponent from "../../components/ModalComponent/ModalComponent";
 
 export default function SuperheroesPage() {
 	const [heroes, setHeroes] = useState<superHero[]>([]);
-	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const [page, setPage] = useState<number>(1);
 
 	const [loadingInitial, setLoadingInitial] = useState(true);
@@ -24,21 +23,15 @@ export default function SuperheroesPage() {
 
 	const loadMoreButtonRef = useRef<HTMLButtonElement>(null);
 
-	const handleHeroAdd = useCallback((newHero: superHero) => {
-		setHeroes((prev) => [...prev, newHero]);
+	const { isModalOpen, openModal, closeModal } = useModal();
+
+	const handleHeroesUpdate = useCallback((allHeroes: superHero[]) => {
+		setHeroes(allHeroes);
 	}, []);
 
 	const handleHeroDelete = useCallback((id: string) => {
 		setHeroes((prev) => prev.filter((hero) => hero._id !== id));
 	}, []);
-
-	const openModal = () => {
-		setIsModalOpen(true);
-	};
-
-	const closeModal = () => {
-		setIsModalOpen(false);
-	};
 
 	useEffect(() => {
 		const fetchAllHeroes = async () => {
@@ -69,17 +62,20 @@ export default function SuperheroesPage() {
 		fetchAllHeroes();
 	}, [page]);
 
-	if (heroes.length === 0) {
+	if (heroes.length === 0 && !loadingInitial && !error) {
 		return (
 			<>
 				<CreateHeroBtn openModal={openModal} />
 				<EmptyGallery />
-				<ReactModal isModalOpen={isModalOpen} closeModal={closeModal}>
-					<AddHeroForm handleHeroAdd={handleHeroAdd} closeModal={closeModal} />
-				</ReactModal>
+				<ModalComponent isModalOpen={isModalOpen} closeModal={closeModal}>
+					<AddHeroForm
+						handleHeroesUpdate={handleHeroesUpdate}
+						closeModal={closeModal}
+					/>
+				</ModalComponent>
 			</>
 		);
-	};
+	}
 
 	return (
 		<>
@@ -101,9 +97,12 @@ export default function SuperheroesPage() {
 							{loadingMore ? "Loading..." : "Load more"}
 						</button>
 					)}
-					<ReactModal isModalOpen={isModalOpen} closeModal={closeModal}>
-						<AddHeroForm handleHeroAdd={handleHeroAdd} closeModal={closeModal} />
-					</ReactModal>
+					<ModalComponent isModalOpen={isModalOpen} closeModal={closeModal}>
+						<AddHeroForm
+							handleHeroesUpdate={handleHeroesUpdate}
+							closeModal={closeModal}
+						/>
+					</ModalComponent>
 				</>
 			)}
 		</>

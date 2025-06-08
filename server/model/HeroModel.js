@@ -28,7 +28,7 @@ const heroSchema = new Schema(
 			default: [],
 		}
 	},
-	{ versionKey: false, timestamps: false }
+	{ versionKey: false, timestamps: true }
 );
 
 const superHeroSchema = Joi.object({
