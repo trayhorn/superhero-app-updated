@@ -3,27 +3,16 @@ import HeroGallery from "../../components/HeroGallery/HeroGallery";
 import AddHeroForm from "../../components/AddHeroForm/AddHeroForm";
 import type { superHero } from "../../types/types";
 import { getAllHerousRequest } from "../../api";
-import Modal from "react-modal";
 import CreateHeroBtn from "../../components/CreateHeroBtn/CreateHeroBtn";
 import { useRef } from "react";
-import styles from "./GalleryPage.module.css";
+import styles from "./SuperheroesPage.module.css";
 import Loader from "../../components/Loader/Loader";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
-import { IoMdClose } from "react-icons/io";
+import EmptyGallery from "../../components/EmptyGallery/EmptyGallery";
+import ReactModal from "../../components/ReactModal/ReactModal";
 
-Modal.setAppElement("#root");
 
-const modalStyles = {
-	content: {
-		top: "50%",
-		left: "50%",
-		transform: "translate(-50%, -50%)",
-		padding: "30px 20px",
-		height: "80%",
-	},
-};
-
-export default function GalleryPage() {
+export default function SuperheroesPage() {
 	const [heroes, setHeroes] = useState<superHero[]>([]);
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const [page, setPage] = useState<number>(1);
@@ -80,6 +69,18 @@ export default function GalleryPage() {
 		fetchAllHeroes();
 	}, [page]);
 
+	if (heroes.length === 0) {
+		return (
+			<>
+				<CreateHeroBtn openModal={openModal} />
+				<EmptyGallery />
+				<ReactModal isModalOpen={isModalOpen} closeModal={closeModal}>
+					<AddHeroForm handleHeroAdd={handleHeroAdd} closeModal={closeModal} />
+				</ReactModal>
+			</>
+		);
+	};
+
 	return (
 		<>
 			{error ? (
@@ -100,20 +101,9 @@ export default function GalleryPage() {
 							{loadingMore ? "Loading..." : "Load more"}
 						</button>
 					)}
-
-					<Modal
-						style={modalStyles}
-						isOpen={isModalOpen}
-						onRequestClose={closeModal}
-					>
-						<AddHeroForm
-							handleHeroAdd={handleHeroAdd}
-							closeModal={closeModal}
-						/>
-						<div className="modalButtonWrapper">
-							<IoMdClose className="modalButton" onClick={closeModal} />
-						</div>
-					</Modal>
+					<ReactModal isModalOpen={isModalOpen} closeModal={closeModal}>
+						<AddHeroForm handleHeroAdd={handleHeroAdd} closeModal={closeModal} />
+					</ReactModal>
 				</>
 			)}
 		</>

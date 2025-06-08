@@ -28,15 +28,14 @@ export default function HeroCard({ heroData, onDelete }: HeroCard) {
 		images
 	} = heroData;
 
+	const heroAvatarSrc =
+		images.length > 0 ? `${BASE_URL}/${images[0]}` : "/images/no-image.jpg";
+
 	return (
 		<li className={styles.heroCard}>
 			<Link className={styles.link} to={`${_id}`}>
 				<div className={styles.imageWrapper}>
-					<img
-						className={styles.image}
-						src={BASE_URL + "/" + images[0]}
-						alt=""
-					/>
+					<img className={styles.image} src={heroAvatarSrc} alt="" />
 				</div>
 				<h3 className={styles.nickname}>{nickname}</h3>
 

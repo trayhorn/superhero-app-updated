@@ -118,6 +118,11 @@ export default function SuperheroDetails({
 		setImagesToDelete([]);
 	};
 
+	const heroAvatarSrc =
+		formData.images.length > 0
+			? `${BASE_URL}/${formData.images[0]}`
+			: "/images/no-image.jpg";
+
 	return (
 		<div className={styles.detailsContainer}>
 			<div className={styles.buttonsContainer}>
@@ -139,7 +144,8 @@ export default function SuperheroDetails({
 						</button>
 						<button
 							className={styles.detailsContainerBtn}
-							onClick={handleEditHeroCancel}>
+							onClick={handleEditHeroCancel}
+						>
 							Cancel
 						</button>
 					</div>
@@ -153,8 +159,8 @@ export default function SuperheroDetails({
 				<div className={styles.avatarWrapper}>
 					<img
 						className={styles.avatar}
-						src={`${BASE_URL}/${formData.images[0]}`}
-						alt="Superhero avatar"
+						src={heroAvatarSrc}
+						alt={`${formData.nickname} avatar`}
 					/>
 				</div>
 				<div className={styles.heroDetailsWrapper}>

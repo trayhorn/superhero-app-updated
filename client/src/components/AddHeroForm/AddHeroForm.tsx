@@ -16,20 +16,6 @@ const validationSchema = Yup.object({
 	origin_description: Yup.string().required("Origin description is required"),
 	superpowers: Yup.string().required("Superpowers are required"),
 	catch_phrase: Yup.string().required("Catch phrase is required"),
-	images: Yup.mixed().test(
-		"is-empty",
-		"At least one image is required",
-		(value) => {
-			if (!value) return false;
-			if (value instanceof FileList) {
-				return value.length > 0;
-			}
-			if (Array.isArray(value)) {
-				return value.length > 0;
-			}
-			return false;
-		}
-	),
 });
 
 export default function AddHeroForm({ handleHeroAdd, closeModal }: Form) {
