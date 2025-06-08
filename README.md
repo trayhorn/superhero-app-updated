@@ -1,6 +1,6 @@
 # 🦸‍♂️ Superhero Web App
 
-A sleek and simple web application for managing superheroes. Users can **view**, **edit**, and **upload** superhero information — including images — in a modern interface.
+A sleek and simple web application for managing superheroes. Users can **view**, **edit**, **upload** and **delete** superhero information in a modern interface.
 
 ---
 
