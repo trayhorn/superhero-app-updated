@@ -69,6 +69,7 @@ export default function SuperheroesPage() {
 				<EmptyGallery />
 				<ModalComponent isModalOpen={isModalOpen} closeModal={closeModal}>
 					<AddHeroForm
+						lastPageCheck={() => setIsLastPage(false)}
 						handleHeroesUpdate={handleHeroesUpdate}
 						closeModal={closeModal}
 					/>
@@ -100,6 +101,7 @@ export default function SuperheroesPage() {
 					<ModalComponent isModalOpen={isModalOpen} closeModal={closeModal}>
 						<AddHeroForm
 							handleHeroesUpdate={handleHeroesUpdate}
+							lastPageCheck={() => setIsLastPage(false)}
 							closeModal={closeModal}
 						/>
 					</ModalComponent>

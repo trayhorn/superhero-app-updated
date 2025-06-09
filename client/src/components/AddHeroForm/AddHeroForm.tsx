@@ -19,6 +19,7 @@ interface HeroFormValues {
 type Form = {
 	handleHeroesUpdate: (allHeroes: superHero[]) => void;
 	closeModal: () => void;
+	lastPageCheck: () => void;
 };
 
 const validationSchema = Yup.object({
@@ -29,7 +30,7 @@ const validationSchema = Yup.object({
 	catch_phrase: Yup.string().required("Catch phrase is required"),
 });
 
-export default function AddHeroForm({ handleHeroesUpdate, closeModal }: Form) {
+export default function AddHeroForm({ handleHeroesUpdate, closeModal, lastPageCheck }: Form) {
 	const handleFileChange = (
 		e: React.ChangeEvent<HTMLInputElement>,
 		setFieldValue: FormikHelpers<HeroFormValues>["setFieldValue"]
@@ -88,6 +89,7 @@ export default function AddHeroForm({ handleHeroesUpdate, closeModal }: Form) {
 					await addHeroRequest(formData);
 					const { data } = await getAllHerousRequest(1);
 					handleHeroesUpdate(data.superheroes);
+					lastPageCheck();
 					closeModal();
 					actions.resetForm();
 				} catch (error) {
