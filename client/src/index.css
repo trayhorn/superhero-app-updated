@@ -1,3 +1,22 @@
+@import "tailwindcss";
+
+@theme {
+  animation: var(--animate-spin);
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+@layer components {
+  .homePageButton {
+    @apply block w-full p-2 bg-white;
+  }
+}
+
+
 :root {
   font-family: "Roboto", sans-serif;
   line-height: 1.5;

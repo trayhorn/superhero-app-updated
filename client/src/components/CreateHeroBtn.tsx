@@ -1,5 +1,3 @@
-import styles from './CreateHeroBtn.module.css';
-
 type CreateHeroBtnProps = {
   openModal: () => void;
 }
@@ -7,7 +5,7 @@ type CreateHeroBtnProps = {
 export default function CreateHeroBtn({openModal}: CreateHeroBtnProps) {
   return (
 		<div>
-			<button className={styles.createHeroBtn} onClick={openModal}>
+			<button className="homePageButton" onClick={openModal}>
 				Create hero
 			</button>
 		</div>

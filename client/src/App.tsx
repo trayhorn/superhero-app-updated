@@ -1,9 +1,9 @@
 import "./App.css";
 import { Routes, Route, Navigate } from "react-router-dom";
-import SuperheroesPage from "./pages/SuperheroesPage/SuperheroesPage";
-import SuperheroDetailsPage from "./pages/SuperheroDetails/SuperheroDetailsPage";
-import Header from "./components/Header/Header";
-import NotFound from "./pages/NotFound/NotFound";
+import SuperheroesPage from "./pages/SuperheroesPage";
+import SuperheroDetailsPage from "./pages/SuperheroDetailsPage";
+import Header from "./components/Header";
+import NotFound from "./pages/NotFound";
 
 function App() {
 	return (

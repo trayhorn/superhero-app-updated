@@ -1,16 +1,15 @@
 import { useCallback, useEffect, useState } from "react";
-import {useModal} from "../../hooks/useModal";
-import HeroGallery from "../../components/HeroGallery/HeroGallery";
-import AddHeroForm from "../../components/AddHeroForm/AddHeroForm";
-import type { superHero } from "../../types/types";
-import { getAllHerousRequest } from "../../api";
-import CreateHeroBtn from "../../components/CreateHeroBtn/CreateHeroBtn";
+import { useModal } from "../hooks/useModal";
+import HeroGallery from "../components/HeroGallery/HeroGallery";
+import AddHeroForm from "../components/AddHeroForm/AddHeroForm";
+import type { superHero } from "../types/types";
+import { getAllHerousRequest } from "../api";
+import CreateHeroBtn from "../components/CreateHeroBtn";
 import { useRef } from "react";
-import styles from "./SuperheroesPage.module.css";
-import Loader from "../../components/Loader/Loader";
-import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
-import EmptyGallery from "../../components/EmptyGallery/EmptyGallery";
-import ModalComponent from "../../components/ModalComponent/ModalComponent";
+import Loader from "../components/Loader";
+import ErrorMessage from "../components/ErrorMessage";
+import EmptyGallery from "../components/EmptyGallery";
+import ModalComponent from "../components/ModalComponent";
 
 export default function SuperheroesPage() {
 	const [heroes, setHeroes] = useState<superHero[]>([]);
@@ -81,7 +80,7 @@ export default function SuperheroesPage() {
 	return (
 		<>
 			{error ? (
-				<ErrorMessage message="Something went wrong. Please try again." />
+				<ErrorMessage />
 			) : loadingInitial ? (
 				<Loader />
 			) : (
@@ -90,7 +89,7 @@ export default function SuperheroesPage() {
 					<HeroGallery heroes={heroes} onDelete={handleHeroDelete} />
 					{!isLastPage && (
 						<button
-							className={styles.loadMoreButton}
+							className="homePageButton"
 							ref={loadMoreButtonRef}
 							onClick={() => setPage((prev) => prev + 1)}
 							disabled={loadingMore}

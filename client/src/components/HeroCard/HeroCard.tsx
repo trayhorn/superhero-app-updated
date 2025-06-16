@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { BASE_URL } from "../../api";
 import Tooltip from "@mui/material/Tooltip";
 import { Grow } from "@mui/material";
-import ModalComponent from "../ModalComponent/ModalComponent";
+import ModalComponent from "../ModalComponent";
 
 type HeroCard = {
 	heroData: superHero;
@@ -17,7 +17,10 @@ type HeroCard = {
 export default function HeroCard({ heroData, onDelete }: HeroCard) {
 	const { isModalOpen, openModal, closeModal } = useModal();
 
-	const handleDeleteHero = async (e: React.MouseEvent, id: string | undefined) => {
+	const handleDeleteHero = async (
+		e: React.MouseEvent,
+		id: string | undefined
+	) => {
 		e.preventDefault();
 		e.stopPropagation();
 
@@ -27,11 +30,7 @@ export default function HeroCard({ heroData, onDelete }: HeroCard) {
 		}
 	};
 
-	const {
-		_id,
-		nickname,
-		images
-	} = heroData;
+	const { _id, nickname, images } = heroData;
 
 	const heroAvatarSrc =
 		images.length > 0 ? `${BASE_URL}/${images[0]}` : "/images/no-image.jpg";
