@@ -1,9 +1,9 @@
-import type { superHero } from "../../types/types";
+import type { superHero } from "../types/types";
 import { Link } from "react-router-dom";
-import styles from './SuperheroDetails.module.css';
-import { BASE_URL } from "../../api";
+import styles from "./SuperheroDetails.module.css";
+import { BASE_URL } from "../api";
 import { useEffect, useState } from "react";
-import { editHeroRequest } from "../../api";
+import { editHeroRequest } from "../api";
 import { MdDelete } from "react-icons/md";
 
 type SuperheroDetails = {
@@ -49,6 +49,31 @@ export default function SuperheroDetails({
 		}
 	}, [heroDetails]);
 
+	const renderField = (
+		name: keyof typeof formData,
+		Tag: "h3" | "h4" | "p",
+		type: "input" | "textarea"
+	) => {
+		const commonProps = {
+			className: "detailsText",
+			name,
+			value: formData[name],
+			onChange: (
+				e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+			) => setFormData((prev) => ({ ...prev, [name]: e.target.value })),
+		};
+
+		if (isEditing) {
+			return type === "input" ? (
+				<input type="text" {...commonProps} />
+			) : (
+				<textarea {...commonProps} />
+			);
+		} else {
+			return <Tag className="detailsText">{formData[name]}</Tag>;
+		}
+	};
+
 	const handleEdit = () => {
 		setIsEditing((prev) => !prev);
 	};
@@ -93,16 +118,14 @@ export default function SuperheroDetails({
 			}
 		}
 
-		const {data} = await editHeroRequest(id, formDataToSend);
+		const { data } = await editHeroRequest(id, formDataToSend);
 		getUpdatedHeroDetails(data);
 		setIsEditing(false);
 		setImagesToDelete([]);
 		setNewFiles(null);
 	};
 
-	if (!heroDetails) {
-		return <div>Loading...</div>;
-	}
+	if (!heroDetails) return;
 
 	const handleEditHeroCancel = () => {
 		setIsEditing(false);
@@ -124,16 +147,16 @@ export default function SuperheroDetails({
 			: "/images/no-image.jpg";
 
 	return (
-		<div className={styles.detailsContainer}>
-			<div className={styles.buttonsContainer}>
-				<Link className={styles.detailsContainerBtn} to="/superheroes">
+		<div className="m-4">
+			<div className="flex justify-between">
+				<Link className="detailsContainerBtn" to="/superheroes">
 					Back
 				</Link>
 
 				{isEditing ? (
 					<div>
 						<button
-							className={styles.detailsContainerBtn}
+							className="detailsContainerBtn"
 							onClick={() => {
 								if (heroDetails._id) {
 									handleEditHeroSave(heroDetails._id, formData);
@@ -143,104 +166,37 @@ export default function SuperheroDetails({
 							Save
 						</button>
 						<button
-							className={styles.detailsContainerBtn}
+							className="detailsContainerBtn"
 							onClick={handleEditHeroCancel}
 						>
 							Cancel
 						</button>
 					</div>
 				) : (
-					<button className={styles.detailsContainerBtn} onClick={handleEdit}>
+					<button className="detailsContainerBtn" onClick={handleEdit}>
 						Edit Superhero
 					</button>
 				)}
 			</div>
-			<div className={styles.wrapper}>
-				<div className={styles.avatarWrapper}>
+			<div className="flex gap-6 mt-4">
+				<div className="max-w-[400px] max-h-[600px]">
 					<img
-						className={styles.avatar}
+						className="block w-full h-full object-cover"
 						src={heroAvatarSrc}
 						alt={`${formData.nickname} avatar`}
 					/>
 				</div>
-				<div className={styles.heroDetailsWrapper}>
-					{isEditing ? (
-						<input
-							className={styles.detailsText}
-							type="text"
-							name="nickname"
-							value={formData.nickname}
-							onChange={(e) =>
-								setFormData((prev) => {
-									return { ...prev, nickname: e.target.value };
-								})
-							}
-						/>
-					) : (
-						<h3 className={styles.detailsText}>{formData.nickname}</h3>
-					)}
-					{isEditing ? (
-						<input
-							className={styles.detailsText}
-							type="text"
-							name="real_name"
-							value={formData.real_name}
-							onChange={(e) =>
-								setFormData((prev) => {
-									return { ...prev, real_name: e.target.value };
-								})
-							}
-						/>
-					) : (
-						<h4 className={styles.detailsText}>{formData.real_name}</h4>
-					)}
-					{isEditing ? (
-						<textarea
-							className={styles.detailsText}
-							name="origin_description"
-							value={formData.origin_description}
-							onChange={(e) =>
-								setFormData((prev) => {
-									return { ...prev, origin_description: e.target.value };
-								})
-							}
-						/>
-					) : (
-						<p className={styles.detailsText}>{formData.origin_description}</p>
-					)}
-					{isEditing ? (
-						<textarea
-							className={styles.detailsText}
-							name="superpowers"
-							value={formData.superpowers}
-							onChange={(e) =>
-								setFormData((prev) => {
-									return { ...prev, superpowers: e.target.value };
-								})
-							}
-						/>
-					) : (
-						<p className={styles.detailsText}>{formData.superpowers}</p>
-					)}
-					{isEditing ? (
-						<textarea
-							className={styles.detailsText}
-							name="catch_phrase"
-							value={formData.catch_phrase}
-							onChange={(e) =>
-								setFormData((prev) => {
-									return { ...prev, catch_phrase: e.target.value };
-								})
-							}
-						/>
-					) : (
-						<p className={styles.detailsText}>{formData.catch_phrase}</p>
-					)}
+				<div className="flex flex-col gap-4 flex-1">
+					{renderField("nickname", "h3", "input")}
+					{renderField("real_name", "h4", "input")}
+					{renderField("origin_description", "p", "textarea")}
+					{renderField("superpowers", "p", "textarea")}
+					{renderField("catch_phrase", "p", "textarea")}
 				</div>
 			</div>
-			<ul className={styles.imagesList}>
+			<ul className="grid grid-cols-5 gap-[10px] list-none p-0 mx-0 my-4">
 				{isEditing && (
-					<li className={styles.uploadImagesWrapper}>
+					<li className="relative flex flex-col justify-center items-center gap-2 p-4 bg-amber-300 border-2 border-orange-600 text-neutral-900">
 						<label htmlFor="images">Upload new images</label>
 						<input
 							type="file"
@@ -275,7 +231,7 @@ export default function SuperheroDetails({
 						/>
 						{isEditing && (
 							<MdDelete
-								className={styles.deleteIcon}
+								className="absolute top-[5px] right-[5px] w-5 h-5 cursor-pointer text-white"
 								onClick={() => handleImageDelete(image)}
 							/>
 						)}

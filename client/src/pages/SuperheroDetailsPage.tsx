@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { getHeroByIdRequest } from "../api";
 import { useEffect, useState } from "react";
 import type { superHero } from "../types/types";
-import SuperheroDetails from "../components/SuperheroDetails/SuperheroDetails";
+import SuperheroDetails from "../components/SuperheroDetails";
 
 import Loader from "../components/Loader";
 import ErrorMessage from "../components/ErrorMessage";

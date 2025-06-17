@@ -1,18 +1,19 @@
 @import "tailwindcss";
 
 @theme {
-  animation: var(--animate-spin);
-
-  @keyframes spin {
-    to {
-      transform: rotate(360deg);
-    }
-  }
+  --font-roboto: "Roboto", sans-serif;
+  --font-montserrat: 'Montserrat', sans-serif;
 }
 
 @layer components {
   .homePageButton {
     @apply block w-full p-2 bg-white;
+  }
+  .detailsContainerBtn {
+    @apply px-4 py-2 bg-white text-neutral-900 rounded-sm;
+  }
+  .detailsText {
+    @apply block text-xl bg-slate-800 p-2 font-roboto text-white;
   }
 }
 
@@ -34,15 +35,25 @@
   --spacing-lg: 24px;
 
   --primary-bg-color: #353839;
-  --primary-bg-light: #4B4E50;
-  --secondary-bg-color: #FFD700;
-  --accent-color: #FF4500;
-  --text-primary-color: #FFFFFF;
-  --text-secondary-color: #1A1A1A;
-  --border-color: #5A5A5A;
-  --hover-color: #FFA500;
-  --success-color: #28a745;
-  --error-color: #dc3545;
+    /* ≈ slate-800 */
+    --primary-bg-light: #4B4E50;
+    /* ≈ slate-700 */
+    --secondary-bg-color: #FFD700;
+    /* ≈ yellow-400 */
+    --accent-color: #FF4500;
+    /* ≈ orange-600 */
+    --text-primary-color: #FFFFFF;
+    /* ≈ white */
+    --text-secondary-color: #1A1A1A;
+    /* ≈ neutral-900 */
+    --border-color: #5A5A5A;
+    /* ≈ neutral-600 */
+    --hover-color: #FFA500;
+    /* ≈ orange-400 */
+    --success-color: #28a745;
+    /* ≈ green-600 */
+    --error-color: #dc3545;
+    /* ≈ red-600 */
 }
 
 body {
@@ -75,9 +86,4 @@ button {
 a {
   color: inherit;
   text-decoration: none;
-}
-
-p {
-  margin: 0;
-  padding: 0;
 }

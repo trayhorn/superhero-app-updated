@@ -1,11 +1,10 @@
-import type { superHero } from "../../types/types";
-import styles from "./AddHeroForm.module.css";
+import type { superHero } from "../types/types";
 import { Formik, Form } from "formik";
 import type { FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { AxiosError } from "axios";
 import { TextField, Button } from "@mui/material";
-import { addHeroRequest, getAllHerousRequest } from "../../api";
+import { addHeroRequest, getAllHerousRequest } from "../api";
 
 interface HeroFormValues {
 	nickname: string;
@@ -30,7 +29,11 @@ const validationSchema = Yup.object({
 	catch_phrase: Yup.string().required("Catch phrase is required"),
 });
 
-export default function AddHeroForm({ handleHeroesUpdate, closeModal, lastPageCheck }: Form) {
+export default function AddHeroForm({
+	handleHeroesUpdate,
+	closeModal,
+	lastPageCheck,
+}: Form) {
 	const handleFileChange = (
 		e: React.ChangeEvent<HTMLInputElement>,
 		setFieldValue: FormikHelpers<HeroFormValues>["setFieldValue"]
@@ -106,7 +109,7 @@ export default function AddHeroForm({ handleHeroesUpdate, closeModal, lastPageCh
 				handleBlur,
 				handleChange,
 			}) => (
-				<Form className={styles.addHeroForm}>
+				<Form className="flex flex-col min-w-[350px] text-neutral-900">
 					<TextField
 						fullWidth
 						margin="normal"
@@ -203,4 +206,3 @@ export default function AddHeroForm({ handleHeroesUpdate, closeModal, lastPageCh
 		</Formik>
 	);
 }
-

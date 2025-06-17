@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useModal } from "../hooks/useModal";
-import HeroGallery from "../components/HeroGallery/HeroGallery";
-import AddHeroForm from "../components/AddHeroForm/AddHeroForm";
+import HeroGallery from "../components/HeroGallery";
+import AddHeroForm from "../components/AddHeroForm";
 import type { superHero } from "../types/types";
 import { getAllHerousRequest } from "../api";
 import CreateHeroBtn from "../components/CreateHeroBtn";
