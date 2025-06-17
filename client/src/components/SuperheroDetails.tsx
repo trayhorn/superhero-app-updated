@@ -1,6 +1,5 @@
 import type { superHero } from "../types/types";
 import { Link } from "react-router-dom";
-import styles from "./SuperheroDetails.module.css";
 import { BASE_URL } from "../api";
 import { useEffect, useState } from "react";
 import { editHeroRequest } from "../api";
@@ -196,7 +195,7 @@ export default function SuperheroDetails({
 			</div>
 			<ul className="grid grid-cols-5 gap-[10px] list-none p-0 mx-0 my-4">
 				{isEditing && (
-					<li className="relative flex flex-col justify-center items-center gap-2 p-4 bg-amber-300 border-2 border-orange-600 text-neutral-900">
+					<li className="relative flex flex-col justify-center items-center gap-2 p-4 bg-secondary-bg border-2 border-accent text-secondary-text">
 						<label htmlFor="images">Upload new images</label>
 						<input
 							type="file"
@@ -219,7 +218,6 @@ export default function SuperheroDetails({
 									? { border: "1px solid red" }
 									: {}
 							}
-							className={styles.image}
 							src={`${BASE_URL}/${image}`}
 							alt="Superhero"
 							onClick={(e) => {

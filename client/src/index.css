@@ -3,6 +3,17 @@
 @theme {
   --font-roboto: "Roboto", sans-serif;
   --font-montserrat: 'Montserrat', sans-serif;
+
+  --color-primary-dark: #353839;
+  --color-primary-light: #4B4E50;
+  --color-secondary-bg: #FFD700;
+  --color-accent: #FF4500;
+  --color-white: #FFFFFF;
+  --color-secondary-text: #1A1A1A;
+  --color-border-color: #5A5A5A;
+  --color-hover: #FFA500;
+  --color-success: #28a745;
+  --color-error: #dc3545;
 }
 
 @layer components {
@@ -10,10 +21,10 @@
     @apply block w-full p-2 bg-white;
   }
   .detailsContainerBtn {
-    @apply px-4 py-2 bg-white text-neutral-900 rounded-sm;
+    @apply px-4 py-2 bg-white text-secondary-text rounded-sm;
   }
   .detailsText {
-    @apply block text-xl bg-slate-800 p-2 font-roboto text-white;
+    @apply block text-xl bg-primary-dark p-2 font-roboto text-white;
   }
 }
 
@@ -28,32 +39,9 @@
   font-synthesis: none;
   text-rendering: optimizeLegibility;
 
-  --font-main: 'Roboto', sans-serif;
-  --font-secondary: 'Montserrat', sans-serif;
   --spacing-sm: 8px;
   --spacing-md: 16px;
   --spacing-lg: 24px;
-
-  --primary-bg-color: #353839;
-    /* ≈ slate-800 */
-    --primary-bg-light: #4B4E50;
-    /* ≈ slate-700 */
-    --secondary-bg-color: #FFD700;
-    /* ≈ yellow-400 */
-    --accent-color: #FF4500;
-    /* ≈ orange-600 */
-    --text-primary-color: #FFFFFF;
-    /* ≈ white */
-    --text-secondary-color: #1A1A1A;
-    /* ≈ neutral-900 */
-    --border-color: #5A5A5A;
-    /* ≈ neutral-600 */
-    --hover-color: #FFA500;
-    /* ≈ orange-400 */
-    --success-color: #28a745;
-    /* ≈ green-600 */
-    --error-color: #dc3545;
-    /* ≈ red-600 */
 }
 
 body {
