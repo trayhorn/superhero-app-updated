@@ -193,11 +193,12 @@ export default function SuperheroDetails({
 					{renderField("catch_phrase", "p", "textarea")}
 				</div>
 			</div>
-			<ul className="grid grid-cols-5 gap-[10px] list-none p-0 mx-0 my-4">
+			<ul className="grid grid-cols-5 gap-[10px] list-none p-0 mx-0 my-md">
 				{isEditing && (
-					<li className="relative flex flex-col justify-center items-center gap-2 p-4 bg-secondary-bg border-2 border-accent text-secondary-text">
+					<li className="relative flex flex-col justify-center items-center gap-2 p-md bg-secondary-bg dark:bg-dark-secondary-bg border-2 border-accent text-secondary-text dark:text-dark-secondary-text">
 						<label htmlFor="images">Upload new images</label>
 						<input
+							className="w-full"
 							type="file"
 							name="newImages"
 							multiple

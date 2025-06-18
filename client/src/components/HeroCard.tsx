@@ -21,7 +21,7 @@ export default function HeroCard({ heroData, onDelete }: HeroCard) {
 		images.length > 0 ? `${BASE_URL}/${images[0]}` : "/images/no-image.jpg";
 
 	return (
-		<li className="group font-montserrat relative list-none p-2 bg-primary-dark border-2 border-border-color rounded-sm text-white cursor-pointer">
+		<li className="group font-montserrat relative list-none p-sm bg-primary-dark  border-2 border-border-color rounded-sm text-third cursor-pointer dark:bg-dark-primary-dark dark:border-dark-border-color dark:text-dark-third">
 			<Link
 				className="flex flex-col justify-between w-full h-full"
 				to={`${_id}`}

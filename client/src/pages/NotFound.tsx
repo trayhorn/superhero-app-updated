@@ -5,7 +5,7 @@ export default function NotFound() {
 		<div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
 			<h1 className="text-center text-[10rem]!">404</h1>
 			<h2 className="text-center text-4xl mb-3!">Page Not Found</h2>
-			<Link className="text-secondary-bg!" to="/superheroes">
+			<Link className="text-secondary-bg! dark:text-dark-secondary-bg" to="/superheroes">
 				Back to homepage
 			</Link>
 		</div>
