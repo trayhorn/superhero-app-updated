@@ -17,6 +17,7 @@
     text-align: center;
     font-size: 3.2em;
     line-height: 1.1;
+    font-weight: 600;
     margin: 0;
   }
 
@@ -37,24 +38,24 @@
   --font-roboto: "Roboto", sans-serif;
   --font-montserrat: 'Montserrat', sans-serif;
 
-  --color-primary-dark: #353839;
-  --color-primary-light: #4B4E50;
-  --color-secondary-bg: #FFD700;
+  --color-primary-dark: #F0F0F0;
+  --color-primary-light: #FFFFFF;
+  --color-secondary-bg: #FFF9CC;
+  --color-third: #1A1A1A;
+  --color-secondary-text: #4B4B4B;
+  --color-border-color: #CCCCCC;
+  --color-hover: #FFD580;
   --color-accent: #FF4500;
-  --color-third: #FFFFFF;
-  --color-secondary-text: #1A1A1A;
-  --color-border-color: #5A5A5A;
-  --color-hover: #FFA500;
   --color-success: #28a745;
   --color-error: #dc3545;
 
-  --color-dark-primary-light: #FFFFFF;
-  --color-dark-primary-dark: #F0F0F0;
-  --color-dark-secondary-bg: #FFF9CC;
-  --color-dark-third: #1A1A1A;
-  --color-dark-secondary-text: #4B4B4B;
-  --color-dark-border-color: #CCCCCC;
-  --color-dark-hover: #FFD580;
+  --color-dark-primary-dark: #353839;
+  --color-dark-primary-light: #4B4E50;
+  --color-dark-secondary-bg: #FFD700;
+  --color-dark-third: #FFFFFF;
+  --color-dark-secondary-text: #1A1A1A;
+  --color-dark-border-color: #5A5A5A;
+  --color-dark-hover: #FFA500;
 
   --spacing-sm: 8px;
   --spacing-md: 16px;

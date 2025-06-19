@@ -1,21 +1,18 @@
 import { useTheme } from "../hooks/useTheme";
-import Switch from "@mui/material/Switch";
-import FormControlLabel from "@mui/material/FormControlLabel";
+import { FaSun, FaMoon } from "react-icons/fa";
 
 export default function ThemeSwitch() {
   const [theme, handleSwitchChange] = useTheme();
 
+  const iconProps = {
+    className: "absolute top-[25px] right-5 cursor-pointer",
+    size: 40,
+    onClick: handleSwitchChange,
+  };
+
   return (
-    <FormControlLabel
-      className="absolute right-5 top-[25px]"
-      control={
-        <Switch
-          checked={theme === "dark"}
-          color="secondary"
-          onChange={handleSwitchChange}
-        />
-      }
-      label="Theme"
-    />
-  );
+		<>
+			{theme === "dark" ? <FaSun {...iconProps} /> : <FaMoon {...iconProps} />}
+		</>
+	);
 }
