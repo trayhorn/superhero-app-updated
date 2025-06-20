@@ -21,7 +21,7 @@ export default function HeroCard({ heroData, onDelete }: HeroCard) {
 		images.length > 0 ? `${BASE_URL}/${images[0]}` : "/images/no-image.jpg";
 
 	return (
-		<li className="group font-montserrat relative list-none p-sm bg-primary-dark  border-2 border-border-color rounded-sm text-third cursor-pointer dark:bg-dark-primary-dark dark:border-dark-border-color dark:text-dark-third">
+		<li className="group font-montserrat relative list-none p-sm bg-card-bg rounded-sm text-text-primary cursor-pointer dark:bg-dark-card-bg dark:border-dark-border-color dark:text-dark-text-primary font-medium [box-shadow:0_4px_10px_rgba(43,45,66,0.1)]">
 			<Link
 				className="flex flex-col justify-between w-full h-full"
 				to={`${_id}`}
@@ -46,7 +46,7 @@ export default function HeroCard({ heroData, onDelete }: HeroCard) {
 				}}
 			>
 				<MdDelete
-					className="absolute top-[10px] right-[10px] w-6 h-6 cursor-pointer opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-150 ease-in-out"
+					className="absolute top-[10px] right-[10px] w-6 h-6 cursor-pointer opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-150 ease-in-out text-white"
 					onClick={(e: React.MouseEvent) => {
 						e.preventDefault();
 						e.stopPropagation();

@@ -6,9 +6,7 @@
     font-family: "Roboto", sans-serif;
     line-height: 1.5;
     font-weight: 400;
-
     color-scheme: light dark;
-
     font-synthesis: none;
     text-rendering: optimizeLegibility;
   }
@@ -38,24 +36,29 @@
   --font-roboto: "Roboto", sans-serif;
   --font-montserrat: 'Montserrat', sans-serif;
 
-  --color-primary-dark: #F0F0F0;
-  --color-primary-light: #FFFFFF;
-  --color-secondary-bg: #FFF9CC;
-  --color-third: #1A1A1A;
-  --color-secondary-text: #4B4B4B;
-  --color-border-color: #CCCCCC;
-  --color-hover: #FFD580;
-  --color-accent: #FF4500;
-  --color-success: #28a745;
-  --color-error: #dc3545;
+  /* Light theme */
 
-  --color-dark-primary-dark: #353839;
-  --color-dark-primary-light: #4B4E50;
-  --color-dark-secondary-bg: #FFD700;
-  --color-dark-third: #FFFFFF;
-  --color-dark-secondary-text: #1A1A1A;
-  --color-dark-border-color: #5A5A5A;
-  --color-dark-hover: #FFA500;
+  --color-header-bg: #2B2D42;
+  --color-header-text: #FFD700;
+  --color-gallery-bg: #EDF2F4;
+  --color-card-bg: #FFFFFF;
+  --color-card-shadow: rgba(43, 45, 66, 0.1);
+  --color-text-primary: #2B2D42;
+  --color-cta-bg: #EF233C;
+  --color-cta-hover: #D90429;
+  --color-cta-text: #FFFFFF;
+
+  /* Dark theme */
+
+  --color-dark-header-bg: #1B1D2A;
+  --color-dark-header-text: #FFD700;
+  --color-dark-gallery-bg: #121318;
+  --color-dark-card-bg: #1F212D;
+  --color-dark-card-shadow: rgba(0, 0, 0, 0.4);
+  --color-dark-text-primary: #F5F5F5;
+  --color-dark-cta-bg: #FF4B5C;
+  --color-dark-cta-hover: #D93645;
+  --color-dark-cta-text: #FFFFFF;
 
   --spacing-sm: 8px;
   --spacing-md: 16px;
@@ -64,14 +67,14 @@
 
 @layer components {
   .homePageButton {
-    @apply block w-full p-2 bg-accent;
+    @apply block w-full p-2 bg-cta-bg text-cta-text;
   }
 
   .detailsContainerBtn {
-    @apply px-4 py-2 bg-third text-secondary-text rounded-sm;
+    @apply px-4 py-2 rounded-sm bg-header-text dark:bg-dark-header-text;
   }
 
   .detailsText {
-    @apply block text-xl bg-primary-dark p-2 font-roboto text-third;
+    @apply block text-xl bg-card-bg dark:bg-dark-card-bg text-text-primary dark:text-dark-text-primary p-2 font-roboto;
   }
 }

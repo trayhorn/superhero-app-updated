@@ -146,7 +146,7 @@ export default function SuperheroDetails({
 			: "/images/no-image.jpg";
 
 	return (
-		<div className="m-4">
+		<div className="p-4 bg-gallery-bg dark:bg-dark-gallery-bg">
 			<div className="flex justify-between">
 				<Link className="detailsContainerBtn" to="/superheroes">
 					Back
@@ -195,7 +195,7 @@ export default function SuperheroDetails({
 			</div>
 			<ul className="grid grid-cols-5 gap-[10px] list-none p-0 mx-0 my-md">
 				{isEditing && (
-					<li className="relative flex flex-col justify-center items-center gap-2 p-md bg-secondary-bg dark:bg-dark-secondary-bg border-2 border-accent text-secondary-text dark:text-dark-secondary-text">
+					<li className="relative flex flex-col justify-center items-center gap-2 p-md bg-card-bg dark:bg-dark-card-bg border-2 border-accent text-text-primary dark:text-dark-text-primary">
 						<label htmlFor="images">Upload new images</label>
 						<input
 							className="w-full"
@@ -212,7 +212,7 @@ export default function SuperheroDetails({
 					</li>
 				)}
 				{formData.images.map((image) => (
-					<li key={image}>
+					<li key={image} className="relative">
 						<img
 							style={
 								imagesToDelete.includes(image)

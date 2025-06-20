@@ -109,7 +109,7 @@ export default function AddHeroForm({
 				handleBlur,
 				handleChange,
 			}) => (
-				<Form className="flex flex-col min-w-[350px] text-secondary-text dark:text-dark-secondary-text">
+				<Form className="flex flex-col min-w-[350px] text-text-primary dark:text-dark-text-primary">
 					<TextField
 						fullWidth
 						margin="normal"
