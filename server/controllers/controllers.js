@@ -21,7 +21,7 @@ const getHeroById = async (req, res) => {
 
 const addHero = async (req, res) => {
 	const files = req.files;
-	const newHero = SuperheroService.addHero(files, req.body);
+	const newHero = await SuperheroService.addHero(files, req.body);
   res.status(201).json(newHero);
 }
 

@@ -7,10 +7,10 @@ const style = {
 	position: "absolute",
 	top: "50%",
 	left: "50%",
-	border: "3px solid #FFA500",
+	// border: "3px solid #FFA500",
 	transform: "translate(-50%, -50%)",
 	padding: "30px 20px",
-	backgroundColor: "background.paper",
+	backgroundColor: "var(--color-gallery-bg)",
 	overflow: "auto",
 	maxHeight: "80%",
 };

@@ -1,10 +1,10 @@
 import type { superHero } from "../types/types";
-import { Formik, Form } from "formik";
+import { Formik, Form, Field } from "formik";
 import type { FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { AxiosError } from "axios";
-import { TextField, Button } from "@mui/material";
 import { addHeroRequest, getAllHerousRequest } from "../api";
+import constructFormData from "../helpers/constructFormData";
 
 interface HeroFormValues {
 	nickname: string;
@@ -30,39 +30,77 @@ const validationSchema = Yup.object({
 });
 
 export default function AddHeroForm({
-	handleHeroesUpdate,
-	closeModal,
-	lastPageCheck,
+  handleHeroesUpdate,
+  closeModal,
+  lastPageCheck
 }: Form) {
-	const handleFileChange = (
-		e: React.ChangeEvent<HTMLInputElement>,
-		setFieldValue: FormikHelpers<HeroFormValues>["setFieldValue"]
+  const handleFileChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    setFieldValue: FormikHelpers<HeroFormValues>["setFieldValue"]
+  ) => {
+    const files = e.currentTarget.files;
+    if (files) {
+      const acceptedFormats = [
+        "image/png",
+        "image/jpeg",
+        "image/jpg",
+        "image/webp",
+      ];
+
+      for (const file of files) {
+        if (!acceptedFormats.includes(file.type)) {
+          alert(
+            "The uploaded file format is not supported. Please upload images in PNG, JPEG, JPG, or WEBP format."
+          );
+          return;
+        }
+      }
+
+      setFieldValue("images", files);
+    }
+	};
+	
+	const handleFormSubmit = async (
+		values: HeroFormValues,
+		actions: FormikHelpers<HeroFormValues>
 	) => {
-		const files = e.currentTarget.files;
-		if (files) {
-			console.log("Files:", files);
+		const formData = constructFormData(values);
 
-			const acceptedFormats = [
-				"image/png",
-				"image/jpeg",
-				"image/jpg",
-				"image/webp",
-			];
-
-			for (const file of files) {
-				if (!acceptedFormats.includes(file.type)) {
-					alert(
-						"The uploaded file format is not supported. Please upload images in PNG, JPEG, JPG, or WEBP format."
-					);
-					return;
-				}
-			}
-
-			setFieldValue("images", files);
+		try {
+			await addHeroRequest(formData);
+			const { data } = await getAllHerousRequest(1);
+			handleHeroesUpdate(data.superheroes);
+			lastPageCheck();
+			closeModal();
+			actions.resetForm();
+		} catch (error) {
+			const err = error as AxiosError<{ message: string }>;
+			alert(err.response?.data?.message || "Error adding hero");
 		}
 	};
 
-	return (
+	const renderFormikInput = (type: "input" | "textarea", name: string) => {
+		const formattedName = name
+			.replace(/_/g, " ")
+			.replace(/\b\w/g, (char) => char.toUpperCase());
+
+		return (
+			<>
+				<label htmlFor={name}>{formattedName}</label>
+				<Field
+					id={name}
+					name={name}
+					className="formInput"
+					as={type === "textarea" ? "textarea" : "input"}
+					rows={type === "textarea" ? 4 : undefined}
+					autoComplete="off"
+					type={type === "input" ? "text" : undefined}
+				/>
+			</>
+		);
+	};
+
+  return (
 		<Formik<HeroFormValues>
 			initialValues={{
 				nickname: "",
@@ -73,134 +111,31 @@ export default function AddHeroForm({
 				images: null,
 			}}
 			validationSchema={validationSchema}
-			onSubmit={async (values, actions) => {
-				const formData = new FormData();
-
-				formData.append("nickname", values.nickname);
-				formData.append("real_name", values.real_name);
-				formData.append("origin_description", values.origin_description);
-				formData.append("superpowers", values.superpowers);
-				formData.append("catch_phrase", values.catch_phrase);
-
-				if (values.images && values.images.length > 0) {
-					for (let i = 0; i < values.images.length; i++) {
-						formData.append("images", values.images[i]);
-					}
-				}
-
-				try {
-					await addHeroRequest(formData);
-					const { data } = await getAllHerousRequest(1);
-					handleHeroesUpdate(data.superheroes);
-					lastPageCheck();
-					closeModal();
-					actions.resetForm();
-				} catch (error) {
-					const err = error as AxiosError<{ message: string }>;
-					alert(err.response?.data?.message || "Error adding hero");
-				}
-			}}
+			onSubmit={handleFormSubmit}
 		>
-			{({
-				setFieldValue,
-				values,
-				touched,
-				errors,
-				handleBlur,
-				handleChange,
-			}) => (
-				<Form className="flex flex-col min-w-[350px] text-text-primary dark:text-dark-text-primary">
-					<TextField
-						fullWidth
-						margin="normal"
-						id="nickname"
-						name="nickname"
-						label="Nickname"
-						value={values.nickname}
-						onChange={handleChange}
-						onBlur={handleBlur}
-						error={touched.nickname && Boolean(errors.nickname)}
-						helperText={touched.nickname && errors.nickname}
-					/>
-
-					<TextField
-						fullWidth
-						margin="normal"
-						id="real_name"
-						name="real_name"
-						label="Real name"
-						value={values.real_name}
-						onChange={handleChange}
-						onBlur={handleBlur}
-						error={touched.real_name && Boolean(errors.real_name)}
-						helperText={touched.real_name && errors.real_name}
-					/>
-
-					<TextField
-						fullWidth
-						margin="normal"
-						id="origin_description"
-						name="origin_description"
-						label="Origin description"
-						multiline
-						rows={4}
-						value={values.origin_description}
-						onChange={handleChange}
-						onBlur={handleBlur}
-						error={
-							touched.origin_description && Boolean(errors.origin_description)
-						}
-						helperText={touched.origin_description && errors.origin_description}
-					/>
-
-					<TextField
-						fullWidth
-						margin="normal"
-						id="superpowers"
-						name="superpowers"
-						label="Superpowers"
-						multiline
-						rows={4}
-						value={values.superpowers}
-						onChange={handleChange}
-						onBlur={handleBlur}
-						error={touched.superpowers && Boolean(errors.superpowers)}
-						helperText={touched.superpowers && errors.superpowers}
-					/>
-
-					<TextField
-						fullWidth
-						margin="normal"
-						id="catch_phrase"
-						name="catch_phrase"
-						label="Catch phrase"
-						multiline
-						rows={4}
-						value={values.catch_phrase}
-						onChange={handleChange}
-						onBlur={handleBlur}
-						error={touched.catch_phrase && Boolean(errors.catch_phrase)}
-						helperText={touched.catch_phrase && errors.catch_phrase}
-					/>
+			{({ setFieldValue }) => (
+				<Form className="flex flex-col min-w-[350px] text-text-primary dark:text-dark-text-primary space-y-2">
+					{renderFormikInput("input", "nickname")}
+					{renderFormikInput("input", "real_name")}
+					{renderFormikInput("textarea", "origin_description")}
+					{renderFormikInput("textarea", "superpowers")}
+					{renderFormikInput("textarea", "catch_phrase")}
 
 					<input
 						accept="image/png,image/jpeg,image/jpg,image/webp"
 						id="images"
 						multiple
 						type="file"
-						style={{ marginTop: 16, marginBottom: 8 }}
+						className="mt-2 mb-4"
 						onChange={(e) => handleFileChange(e, setFieldValue)}
 					/>
 
-					<Button
-						variant="contained"
-						color="primary"
+					<button
 						type="submit"
-						fullWidth
-						sx={{ marginTop: 2 }}
+						className="bg-cta-bg text-cta-text px-2 py-3 hover:bg-cta-hover"
 					>
 						Submit
-					</Button>
+					</button>
 				</Form>
 			)}
 		</Formik>

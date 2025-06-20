@@ -77,4 +77,14 @@
   .detailsText {
     @apply block text-xl bg-card-bg dark:bg-dark-card-bg text-text-primary dark:text-dark-text-primary p-2 font-roboto;
   }
+
+  .popUpButton {
+    @apply px-md py-sm bg-cta-bg dark:bg-dark-cta-bg text-cta-text dark:text-dark-cta-text hover:bg-cta-hover dark:hover:bg-dark-cta-hover rounded-[5px];
+  }
+
+  .formInput {
+    background-color: var(--color-card-bg);
+    padding: 8px 12px;
+    border: 1px solid var(--color-text-primary);
+  }
 }

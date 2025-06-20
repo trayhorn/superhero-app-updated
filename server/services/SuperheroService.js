@@ -33,31 +33,34 @@ const SuperheroService = {
 
 		const newHero = await Superhero.create({ ...body, images: [] });
 
-		const heroDirName = newHero._id.toString();
-		const imagesSaveDir = path.join(
-			dirname,
-			"../",
-			"public",
-			"images",
-			heroDirName
-		);
+		if (files.length > 0) {
+			const heroDirName = newHero._id.toString();
+			const imagesSaveDir = path.join(
+				dirname,
+				"../",
+				"public",
+				"images",
+				heroDirName
+			);
 
-		await fs.mkdir(imagesSaveDir, { recursive: true });
-		const imagesArray = [];
+			await fs.mkdir(imagesSaveDir, { recursive: true });
+			const imagesArray = [];
 
-		await Promise.all(
-			files.map(async (file) => {
-				const { originalname, path: oldPath } = file;
+			await Promise.all(
+				files.map(async (file) => {
+					const { originalname, path: oldPath } = file;
 
-				const imageUrl = path.join("images", heroDirName, originalname);
-				imagesArray.push(imageUrl);
+					const imageUrl = path.join("images", heroDirName, originalname);
+					imagesArray.push(imageUrl);
 
-				await fs.rename(oldPath, path.join(imagesSaveDir, originalname));
-			})
-		);
+					await fs.rename(oldPath, path.join(imagesSaveDir, originalname));
+				})
+			);
 
-		newHero.images = imagesArray;
-		await newHero.save();
+			newHero.images = imagesArray;
+			await newHero.save();
+		}
+
 		return newHero;
 	},
 	deleteHero: async (id) => {

@@ -25,15 +25,12 @@ export default function DeletePopUp({ closeModal, onDelete, id }: PopUpProps) {
 			<h2>Are you sure you want to delete this hero?</h2>
 			<div className="flex justify-center gap-4">
 				<button
-					className="px-md py-sm bg-header-bg dark:bg-dark-header-bg rounded-[5px]"
+					className="popUpButton"
 					onClick={(e) => handleDeleteHero(e, id)}
 				>
 					Delete
 				</button>
-				<button
-					className="px-md py-sm bg-header-bg dark:bg-dark-header-bg rounded-[5px]"
-					onClick={closeModal}
-				>
+				<button className="popUpButton" onClick={closeModal}>
 					Cancel
 				</button>
 			</div>
