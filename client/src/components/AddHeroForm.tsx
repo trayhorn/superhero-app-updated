@@ -114,7 +114,7 @@ export default function AddHeroForm({
 			onSubmit={handleFormSubmit}
 		>
 			{({ setFieldValue }) => (
-				<Form className="flex flex-col min-w-[350px] text-text-primary dark:text-dark-text-primary space-y-2">
+				<Form className="flex flex-col min-w-[350px] text-text-primary space-y-2">
 					{renderFormikInput("input", "nickname")}
 					{renderFormikInput("input", "real_name")}
 					{renderFormikInput("textarea", "origin_description")}

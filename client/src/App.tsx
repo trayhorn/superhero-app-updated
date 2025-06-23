@@ -1,4 +1,3 @@
-import "./App.css";
 import { Routes, Route, Navigate } from "react-router-dom";
 import SuperheroesPage from "./pages/SuperheroesPage";
 import SuperheroDetailsPage from "./pages/SuperheroDetailsPage";

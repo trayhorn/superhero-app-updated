@@ -3,8 +3,6 @@ import type { superHero } from "../types/types";
 import { MdDelete } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { BASE_URL } from "../api";
-import Tooltip from "@mui/material/Tooltip";
-import { Grow } from "@mui/material";
 import ModalComponent from "./ModalComponent";
 import DeletePopUp from "./DeletePopUp";
 
@@ -35,26 +33,14 @@ export default function HeroCard({ heroData, onDelete }: HeroCard) {
 				</div>
 				<h3 className="mt-2 text-center">{nickname}</h3>
 			</Link>
-
-			<Tooltip
-				title="Delete"
-				slots={{
-					transition: Grow,
+			<MdDelete
+				className="absolute top-[10px] right-[10px] w-6 h-6 cursor-pointer opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-150 ease-in-out text-white"
+				onClick={(e: React.MouseEvent) => {
+					e.preventDefault();
+					e.stopPropagation();
+					openModal();
 				}}
-				slotProps={{
-					transition: { timeout: 300 },
-				}}
-			>
-				<MdDelete
-					className="absolute top-[10px] right-[10px] w-6 h-6 cursor-pointer opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-150 ease-in-out text-white"
-					onClick={(e: React.MouseEvent) => {
-						e.preventDefault();
-						e.stopPropagation();
-						openModal();
-					}}
-				/>
-			</Tooltip>
-
+			/>
 			<ModalComponent isModalOpen={isModalOpen} closeModal={closeModal}>
 				<DeletePopUp closeModal={closeModal} onDelete={onDelete} id={_id} />
 			</ModalComponent>
