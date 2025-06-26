@@ -6,4 +6,5 @@ export type superHero = {
   superpowers: string;
   catch_phrase: string;
   images: string[];
+  urls?: string[];
 };

@@ -2,7 +2,6 @@ import { useModal } from "../hooks/useModal";
 import type { superHero } from "../types/types";
 import { MdDelete } from "react-icons/md";
 import { Link } from "react-router-dom";
-import { BASE_URL } from "../api";
 import ModalComponent from "./ModalComponent";
 import DeletePopUp from "./DeletePopUp";
 
@@ -13,10 +12,10 @@ type HeroCard = {
 
 export default function HeroCard({ heroData, onDelete }: HeroCard) {
 	const { isModalOpen, openModal, closeModal } = useModal();
-	const { _id, nickname, images } = heroData;
+	const { _id, nickname, thumbnail } = heroData;
 
 	const heroAvatarSrc =
-		images.length > 0 ? `${BASE_URL}/${images[0]}` : "/images/no-image.jpg";
+		thumbnail ? thumbnail : "/images/no-image.jpg";
 
 	return (
 		<li className="group font-montserrat relative list-none p-sm bg-card-bg rounded-sm text-text-primary cursor-pointer dark:bg-dark-card-bg dark:border-dark-border-color dark:text-dark-text-primary font-medium [box-shadow:0_4px_10px_rgba(43,45,66,0.1)]">

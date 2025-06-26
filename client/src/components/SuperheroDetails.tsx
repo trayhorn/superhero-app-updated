@@ -1,8 +1,7 @@
 import type { superHero } from "../types/types";
 import { Link } from "react-router-dom";
-import { BASE_URL } from "../api";
 import { useEffect, useState } from "react";
-import { editHeroRequest } from "../api";
+import { editHeroRequest, getHeroByIdRequest } from "../api";
 import { MdDelete } from "react-icons/md";
 
 type SuperheroDetails = {
@@ -22,29 +21,14 @@ export default function SuperheroDetails({
 		superpowers: "",
 		catch_phrase: "",
 		images: [],
+		urls: [],
 	});
 	const [newFiles, setNewFiles] = useState<FileList | null>(null);
 	const [imagesToDelete, setImagesToDelete] = useState<string[]>([]);
 
 	useEffect(() => {
 		if (heroDetails) {
-			const {
-				nickname,
-				real_name,
-				origin_description,
-				superpowers,
-				catch_phrase,
-				images,
-			} = heroDetails;
-
-			setFormData({
-				nickname,
-				real_name,
-				origin_description,
-				superpowers,
-				catch_phrase,
-				images,
-			});
+			setFormData(heroDetails);
 		}
 	}, [heroDetails]);
 
@@ -117,7 +101,8 @@ export default function SuperheroDetails({
 			}
 		}
 
-		const { data } = await editHeroRequest(id, formDataToSend);
+		await editHeroRequest(id, formDataToSend);
+		const { data } = await getHeroByIdRequest(id);
 		getUpdatedHeroDetails(data);
 		setIsEditing(false);
 		setImagesToDelete([]);
@@ -135,14 +120,15 @@ export default function SuperheroDetails({
 			superpowers: heroDetails.superpowers,
 			catch_phrase: heroDetails.catch_phrase,
 			images: heroDetails.images,
+			urls: heroDetails.urls,
 		});
 		setNewFiles(null);
 		setImagesToDelete([]);
 	};
 
 	const heroAvatarSrc =
-		formData.images.length > 0
-			? `${BASE_URL}/${formData.images[0]}`
+		formData.urls && formData.urls.length > 0
+			? formData.urls?.[0]
 			: "/images/no-image.jpg";
 
 	return (
@@ -211,7 +197,7 @@ export default function SuperheroDetails({
 						/>
 					</li>
 				)}
-				{formData.images.map((image) => (
+				{formData.images.map((image, index) => (
 					<li key={image} className="relative">
 						<img
 							style={
@@ -219,14 +205,8 @@ export default function SuperheroDetails({
 									? { border: "1px solid red" }
 									: {}
 							}
-							src={`${BASE_URL}/${image}`}
+							src={formData.urls?.[index]}
 							alt="Superhero"
-							onClick={(e) => {
-								console.log({
-									target: e.target,
-									currentTarget: e.currentTarget,
-								});
-							}}
 						/>
 						{isEditing && (
 							<MdDelete

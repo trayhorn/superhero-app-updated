@@ -15,8 +15,8 @@ const getAllHeroes = async (req, res) => {
 
 const getHeroById = async (req, res) => {
   const { id } = req.params;
-	const hero = await SuperheroService.getHeroById(id);
-  res.status(200).json(hero);
+	const result = await SuperheroService.getHeroById(id);
+	res.status(200).json(result);
 }
 
 const addHero = async (req, res) => {

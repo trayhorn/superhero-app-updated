@@ -1,24 +1,49 @@
 import { Superhero } from "../model/HeroModel.js";
 import HttpError from "../helpers/HttpError.js";
 import fs from "fs/promises";
-import path from "path";
-
-const dirname = import.meta.dirname;
+import {
+	uploadFilesIntoBucket,
+	deleteFilesFromBucket,
+	deleteFilesOnEdit,
+	getImageSignedUrl,
+} from "../aws-s3.js";
 
 const SuperheroService = {
 	getAllHeroes: async (skip, limit) => {
-		return await Promise.all([
-			Superhero.find({}, "_id nickname images", {
-				skip,
-				limit: Number(limit),
-			}).sort({ createdAt: -1 }),
-			Superhero.countDocuments(),
-		]);
+		const superheroes = await Superhero.find({}, "_id nickname images", {
+			skip,
+			limit: Number(limit),
+		}).lean();
+
+		await Promise.all(
+			superheroes.map(async (hero) => {
+				const key = hero.images[0];
+				if (hero.images.length > 0 && hero.images[0]) {
+					const url = await getImageSignedUrl(key);
+					hero.thumbnail = url;
+				}
+			})
+		);
+
+		const total = await Superhero.countDocuments();
+
+		return [superheroes, total];
 	},
 	getHeroById: async (id) => {
-		const hero = await Superhero.findById(id);
-		if (!hero) throw HttpError(400, "No such hero");
-		return hero;
+		const superhero = await Superhero.findById(id).lean();
+		if (!superhero) throw HttpError(400, "No such hero");
+
+		let imageUrls = [];
+
+		if (superhero.images.length > 0) {
+			imageUrls = await Promise.all(
+				superhero.images.map((image) => getImageSignedUrl(image))
+			);
+		}
+
+		superhero.urls = imageUrls;
+
+		return superhero;
 	},
 	addHero: async (files, body) => {
 		const { nickname: newHeroNickname } = body;
@@ -35,25 +60,24 @@ const SuperheroService = {
 
 		if (files.length > 0) {
 			const heroDirName = newHero._id.toString();
-			const imagesSaveDir = path.join(
-				dirname,
-				"../",
-				"public",
-				"images",
-				heroDirName
-			);
-
-			await fs.mkdir(imagesSaveDir, { recursive: true });
 			const imagesArray = [];
 
 			await Promise.all(
 				files.map(async (file) => {
 					const { originalname, path: oldPath } = file;
 
-					const imageUrl = path.join("images", heroDirName, originalname);
-					imagesArray.push(imageUrl);
+					const key = `${heroDirName}/${originalname}`;
 
-					await fs.rename(oldPath, path.join(imagesSaveDir, originalname));
+					try {
+						await uploadFilesIntoBucket({
+							key,
+							filePath: oldPath,
+						});
+					} catch (error) {
+						console.log("Error when uploading files to bucket", error);
+					}
+					imagesArray.push(key);
+					await fs.unlink(oldPath);
 				})
 			);
 
@@ -65,11 +89,9 @@ const SuperheroService = {
 	},
 	deleteHero: async (id) => {
 		const result = await Superhero.findByIdAndDelete(id);
-
 		if (!result) throw HttpError(400, "No such superhero");
 
-		const imagesFolderPath = path.join(dirname, "..", "public", "images", id);
-		await fs.rm(imagesFolderPath, { recursive: true, force: true });
+		await deleteFilesFromBucket(id);
 	},
 	editHero: async (id, body, newFiles) => {
 		const heroToEdit = await Superhero.findById(id);
@@ -94,37 +116,27 @@ const SuperheroService = {
 			(img) => !imagesToKeep.includes(img)
 		);
 
-		await Promise.all(
-			imagesToDelete.map(async (imgPath) => {
-				const fullPath = path.join(dirname, "../", "public", imgPath);
-				try {
-					await fs.unlink(fullPath);
-				} catch (error) {
-					console.log(error.message);
-				}
-			})
-		);
+		console.log(imagesToDelete);
+
+
+		if(imagesToDelete.length > 0) await deleteFilesOnEdit(imagesToDelete);
 
 		const newImages = [];
 
 		if (newFiles) {
 			const heroDirName = heroToEdit._id.toString();
-			const imagesSaveDir = path.join(
-				dirname,
-				"../",
-				"public",
-				"images",
-				heroDirName
-			);
 
 			await Promise.all(
 				newFiles.map(async (file) => {
 					const { originalname, path: oldPath } = file;
+					const key = `${heroDirName}/${originalname}`;
 
-					const imageUrl = path.join("images", heroDirName, originalname);
-					newImages.push(imageUrl);
-
-					await fs.rename(oldPath, path.join(imagesSaveDir, originalname));
+					await uploadFilesIntoBucket({
+						key,
+						filePath: oldPath,
+					});
+					newImages.push(key);
+					fs.unlink(oldPath);
 				})
 			);
 		}
