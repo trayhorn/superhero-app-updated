@@ -21,7 +21,7 @@ export default function ModalComponent({ isModalOpen, closeModal, children }: Mo
 					onClick={closeModal}
 					className="fixed inset-0 bg-black opacity-20 transition-all duration-150 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0 dark:opacity-70"
 				/>
-				<Dialog.Popup className="fixed top-1/2 left-1/2 w-fit max-h-[80vh] -translate-x-1/2 -translate-y-1/2 rounded-lg bg-gray-50 p-6   transition-all duration-150 data-[ending-style]:scale-90 data-[ending-style]:opacity-0 data-[starting-style]:scale-90 data-[starting-style]:opacity-0 dark:outline-gray-300 overflow-auto">
+				<Dialog.Popup className="fixed top-1/2 left-1/2 w-fit max-h-[80vh] -translate-x-1/2 -translate-y-1/2 bg-gallery-bg rounded-lg p-6 transition-all duration-150 data-[ending-style]:scale-90 data-[ending-style]:opacity-0 data-[starting-style]:scale-90 data-[starting-style]:opacity-0 dark:outline-gray-300 overflow-auto">
 					{children}
 					<div className="flex justify-end gap-4">
 						<Dialog.Close>

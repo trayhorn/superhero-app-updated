@@ -116,8 +116,6 @@ const SuperheroService = {
 			(img) => !imagesToKeep.includes(img)
 		);
 
-		console.log(imagesToDelete);
-
 
 		if(imagesToDelete.length > 0) await deleteFilesOnEdit(imagesToDelete);
 
