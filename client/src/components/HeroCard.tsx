@@ -2,8 +2,7 @@ import { useModal } from "../hooks/useModal";
 import type { superHero } from "../types/types";
 import { MdDelete } from "react-icons/md";
 import { Link } from "react-router-dom";
-import ModalComponent from "./ModalComponent";
-import DeletePopUp from "./DeletePopUp";
+import {ModalComponent, DeletePopUp} from "./index";
 import Tooltip from "./Tooltip";
 
 type HeroCard = {

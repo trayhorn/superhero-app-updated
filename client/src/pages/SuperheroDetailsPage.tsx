@@ -1,11 +1,9 @@
+import { useEffect, useState, lazy } from "react";
 import { useParams } from "react-router-dom";
 import { getHeroByIdRequest } from "../api";
-import { useEffect, useState } from "react";
 import type { superHero } from "../types/types";
-import SuperheroDetails from "../components/SuperheroDetails";
-
-import Loader from "../components/Loader";
-import ErrorMessage from "../components/ErrorMessage";
+import {SuperheroDetails, Loader} from "../components/index";
+const ErrorMessage = lazy(() => import("../components/ErrorMessage"));
 
 export default function SuperheroDetailsPage() {
 	const { id } = useParams();

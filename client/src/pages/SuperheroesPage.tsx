@@ -1,15 +1,12 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useRef, lazy } from "react";
 import { useModal } from "../hooks/useModal";
-import HeroGallery from "../components/HeroGallery";
-import AddHeroForm from "../components/AddHeroForm";
+import {HeroGallery, CreateHeroBtn, Loader} from "../components/index";
 import type { superHero } from "../types/types";
 import { getAllHerousRequest } from "../api";
-import CreateHeroBtn from "../components/CreateHeroBtn";
-import { useRef } from "react";
-import Loader from "../components/Loader";
-import ErrorMessage from "../components/ErrorMessage";
-import EmptyGallery from "../components/EmptyGallery";
-import ModalComponent from "../components/ModalComponent";
+const AddHeroForm = lazy(() => import("../components/AddHeroForm"));
+const ErrorMessage = lazy(() => import("../components/ErrorMessage"));
+const EmptyGallery = lazy(() => import("../components/EmptyGallery"));
+const ModalComponent = lazy(() => import("../components/ModalComponent"));
 
 export default function SuperheroesPage() {
 	const [heroes, setHeroes] = useState<superHero[]>([]);
@@ -45,7 +42,9 @@ export default function SuperheroesPage() {
 				const { data } = await getAllHerousRequest(page);
 
 				setHeroes((prev) =>
-					page === 1 ? data.superheroes : [...prev, ...data.superheroes]
+					page === 1
+						? data.superheroes
+						: [...prev, ...data.superheroes]
 				);
 
 				setIsLastPage(data.totalPages === page);

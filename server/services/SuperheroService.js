@@ -88,10 +88,10 @@ const SuperheroService = {
 		return newHero;
 	},
 	deleteHero: async (id) => {
-		const result = await Superhero.findByIdAndDelete(id);
-		if (!result) throw HttpError(400, "No such superhero");
+		const superhero = await Superhero.findByIdAndDelete(id);
+		if (!superhero) throw HttpError(400, "No such superhero");
 
-		await deleteFilesFromBucket(id);
+		if(superhero.images.length > 0) await deleteFilesFromBucket(id);
 	},
 	editHero: async (id, body, newFiles) => {
 		const heroToEdit = await Superhero.findById(id);

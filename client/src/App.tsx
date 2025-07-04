@@ -1,8 +1,10 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import SuperheroesPage from "./pages/SuperheroesPage";
-import SuperheroDetailsPage from "./pages/SuperheroDetailsPage";
+import { lazy } from "react";
 import Header from "./components/Header";
-import NotFound from "./pages/NotFound";
+
+const SuperheroesPage = lazy(() => import("./pages/SuperheroesPage"));
+const SuperheroDetailsPage = lazy(() => import("./pages/SuperheroDetailsPage"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 function App() {
 	return (

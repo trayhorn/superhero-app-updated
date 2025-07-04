@@ -5,8 +5,7 @@ const getAllHeroes = async (req, res) => {
   const { page = 1, limit = 5 } = req.query;
 	const skip = (page - 1) * limit;
 
-	const [superheroes, total] = await SuperheroService.getAllHeroes(skip, limit);
-
+	const [superheroes, total] = (await SuperheroService.getAllHeroes(skip, limit));
 	res.status(200).json({
 		superheroes,
 		totalPages: Math.ceil(total / limit),

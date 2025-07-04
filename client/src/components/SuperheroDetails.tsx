@@ -1,6 +1,6 @@
-import type { superHero } from "../types/types";
-import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import type { superHero } from "../types/types";
 import { editHeroRequest, getHeroByIdRequest } from "../api";
 import { MdDelete } from "react-icons/md";
 
