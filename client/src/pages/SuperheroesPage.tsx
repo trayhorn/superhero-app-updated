@@ -1,66 +1,41 @@
-import { useCallback, useEffect, useState, useRef, lazy } from "react";
+import { useState, useRef, lazy } from "react";
 import { useModal } from "../hooks/useModal";
 import {HeroGallery, CreateHeroBtn, Loader} from "../components/index";
-import type { superHero } from "../types/types";
 import { getAllHerousRequest } from "../api";
+import {
+	keepPreviousData,
+	useQuery,
+	useQueryClient,
+} from "@tanstack/react-query";
 const AddHeroForm = lazy(() => import("../components/AddHeroForm"));
 const ErrorMessage = lazy(() => import("../components/ErrorMessage"));
 const EmptyGallery = lazy(() => import("../components/EmptyGallery"));
 const ModalComponent = lazy(() => import("../components/ModalComponent"));
 
 export default function SuperheroesPage() {
-	const [heroes, setHeroes] = useState<superHero[]>([]);
 	const [page, setPage] = useState<number>(1);
 
-	const [loadingInitial, setLoadingInitial] = useState(true);
-	const [error, setError] = useState(false);
-	const [loadingMore, setLoadingMore] = useState(false);
 	const [isLastPage, setIsLastPage] = useState(false);
+
+	const queryClient = useQueryClient();
+
+	const { isError, isPending, data } = useQuery({
+		queryKey: ["superheroes", page],
+		queryFn: () => getAllHerousRequest(page),
+		placeholderData: keepPreviousData,
+	});
+
+	console.log(data?.data.superheroes);
 
 	const loadMoreButtonRef = useRef<HTMLButtonElement>(null);
 
 	const { isModalOpen, openModal, closeModal } = useModal();
 
-	const handleHeroesUpdate = useCallback((allHeroes: superHero[]) => {
-		setHeroes(allHeroes);
-	}, []);
+	const refetchAllHeroes = () => {
+		queryClient.invalidateQueries({ queryKey: ["superheroes", page] });
+	};
 
-	const handleHeroDelete = useCallback((id: string) => {
-		setHeroes((prev) => prev.filter((hero) => hero._id !== id));
-	}, []);
-
-	useEffect(() => {
-		const fetchAllHeroes = async () => {
-			try {
-				if (page === 1) {
-					setLoadingInitial(true);
-				} else {
-					setLoadingMore(true);
-				}
-				setError(false);
-
-				const { data } = await getAllHerousRequest(page);
-
-				setHeroes((prev) =>
-					page === 1
-						? data.superheroes
-						: [...prev, ...data.superheroes]
-				);
-
-				setIsLastPage(data.totalPages === page);
-			} catch (error) {
-				console.error("Error fetching heroes:", error);
-				setError(true);
-			} finally {
-				setLoadingInitial(false);
-				setLoadingMore(false);
-			}
-		};
-
-		fetchAllHeroes();
-	}, [page]);
-
-	if (heroes.length === 0 && !loadingInitial && !error) {
+	if (data?.data.superheroes.length === 0 && !isPending && !isError) {
 		return (
 			<>
 				<CreateHeroBtn openModal={openModal} />
@@ -68,7 +43,7 @@ export default function SuperheroesPage() {
 				<ModalComponent isModalOpen={isModalOpen} closeModal={closeModal}>
 					<AddHeroForm
 						lastPageCheck={() => setIsLastPage(false)}
-						handleHeroesUpdate={handleHeroesUpdate}
+						handleHeroesUpdate={refetchAllHeroes}
 						closeModal={closeModal}
 					/>
 				</ModalComponent>
@@ -78,27 +53,30 @@ export default function SuperheroesPage() {
 
 	return (
 		<>
-			{error ? (
+			{isError ? (
 				<ErrorMessage />
-			) : loadingInitial ? (
+			) : isPending ? (
 				<Loader />
 			) : (
 				<>
 					<CreateHeroBtn openModal={openModal} />
-					<HeroGallery heroes={heroes} onDelete={handleHeroDelete} />
+					<HeroGallery
+						heroes={data?.data.superheroes}
+						onDelete={refetchAllHeroes}
+					/>
 					{!isLastPage && (
 						<button
 							className="homePageButton"
 							ref={loadMoreButtonRef}
 							onClick={() => setPage((prev) => prev + 1)}
-							disabled={loadingMore}
+							disabled={isPending}
 						>
-							{loadingMore ? "Loading..." : "Load more"}
+							{isPending ? "Loading..." : "Load more"}
 						</button>
 					)}
 					<ModalComponent isModalOpen={isModalOpen} closeModal={closeModal}>
 						<AddHeroForm
-							handleHeroesUpdate={handleHeroesUpdate}
+							handleHeroesUpdate={refetchAllHeroes}
 							lastPageCheck={() => setIsLastPage(false)}
 							closeModal={closeModal}
 						/>

@@ -6,6 +6,7 @@ const SuperheroesPage = lazy(() => import("./pages/SuperheroesPage"));
 const SuperheroDetailsPage = lazy(() => import("./pages/SuperheroDetailsPage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
+
 function App() {
 	return (
 		<Routes>

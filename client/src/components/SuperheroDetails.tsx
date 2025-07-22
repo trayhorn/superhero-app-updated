@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import type { superHero } from "../types/types";
-import { editHeroRequest, getHeroByIdRequest } from "../api";
+import { editHeroRequest } from "../api";
 import { MdDelete } from "react-icons/md";
 
 type SuperheroDetails = {
 	heroDetails: superHero | null;
-	getUpdatedHeroDetails: (updatedHeroDetails: superHero) => void;
+	getUpdatedHeroDetails: () => void;
 };
 
 export default function SuperheroDetails({
@@ -102,8 +102,7 @@ export default function SuperheroDetails({
 		}
 
 		await editHeroRequest(id, formDataToSend);
-		const { data } = await getHeroByIdRequest(id);
-		getUpdatedHeroDetails(data);
+		getUpdatedHeroDetails();
 		setIsEditing(false);
 		setImagesToDelete([]);
 		setNewFiles(null);
