@@ -2,12 +2,11 @@ import { lazy } from "react";
 import { useParams } from "react-router-dom";
 import { getHeroByIdRequest } from "../api";
 import { SuperheroDetails, Loader } from "../components/index";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 const ErrorMessage = lazy(() => import("../components/ErrorMessage"));
 
 export default function SuperheroDetailsPage() {
 	const { id } = useParams();
-	const queryClient = useQueryClient();
 
 
 	const {isPending, isError, data: heroData} = useQuery({
@@ -19,10 +18,6 @@ export default function SuperheroDetailsPage() {
 		},
 	});
 
-	const refetchHeroDetails = () => {
-		queryClient.invalidateQueries({ queryKey: ["superheroDetails", id] });
-	};
-
 	return (
 		<>
 			{isError ? (
@@ -32,7 +27,6 @@ export default function SuperheroDetailsPage() {
 			) : (
 				<SuperheroDetails
 					heroDetails={heroData.data}
-					getUpdatedHeroDetails={refetchHeroDetails}
 				/>
 			)}
 		</>

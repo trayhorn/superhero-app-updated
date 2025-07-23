@@ -2,7 +2,7 @@ import { useRef, lazy } from "react";
 import { useModal } from "../hooks/useModal";
 import {HeroGallery, CreateHeroBtn, Loader} from "../components/index";
 import { getAllHerousRequest } from "../api";
-import { useQueryClient, useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 const AddHeroForm = lazy(() => import("../components/AddHeroForm"));
 const ErrorMessage = lazy(() => import("../components/ErrorMessage"));
 const EmptyGallery = lazy(() => import("../components/EmptyGallery"));
@@ -11,8 +11,6 @@ const ModalComponent = lazy(() => import("../components/ModalComponent"));
 export default function SuperheroesPage() {
 	const { isModalOpen, openModal, closeModal } = useModal();
 	const loadMoreButtonRef = useRef<HTMLButtonElement>(null);
-
-	const queryClient = useQueryClient();
 
 	const { data, fetchNextPage, isPending, isError, hasNextPage } =
 		useInfiniteQuery({
@@ -23,10 +21,6 @@ export default function SuperheroesPage() {
 				lastPage.data.totalPages !== lastPageParam ? lastPageParam + 1 : null,
 		});
 
-	const refetchAllHeroes = () => {
-		queryClient.invalidateQueries({ queryKey: ["superheroes"] });
-	};
-
 	if (data?.pages[0].data.superheroes.length === 0 && !isPending && !isError) {
 		return (
 			<>
@@ -34,7 +28,6 @@ export default function SuperheroesPage() {
 				<EmptyGallery />
 				<ModalComponent isModalOpen={isModalOpen} closeModal={closeModal}>
 					<AddHeroForm
-						handleHeroesUpdate={refetchAllHeroes}
 						closeModal={closeModal}
 					/>
 				</ModalComponent>
@@ -51,7 +44,7 @@ export default function SuperheroesPage() {
 			) : (
 				<>
 					<CreateHeroBtn openModal={openModal} />
-					<HeroGallery data={data} onDelete={refetchAllHeroes} />
+						<HeroGallery data={data} />
 					{hasNextPage && (
 						<button
 							className="homePageButton"
@@ -63,7 +56,6 @@ export default function SuperheroesPage() {
 					)}
 					<ModalComponent isModalOpen={isModalOpen} closeModal={closeModal}>
 						<AddHeroForm
-							handleHeroesUpdate={refetchAllHeroes}
 							closeModal={closeModal}
 						/>
 					</ModalComponent>

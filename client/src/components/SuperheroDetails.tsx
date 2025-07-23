@@ -3,15 +3,14 @@ import { Link } from "react-router-dom";
 import type { superHero } from "../types/types";
 import { editHeroRequest } from "../api";
 import { MdDelete } from "react-icons/md";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 type SuperheroDetails = {
 	heroDetails: superHero | null;
-	getUpdatedHeroDetails: () => void;
 };
 
 export default function SuperheroDetails({
 	heroDetails,
-	getUpdatedHeroDetails,
 }: SuperheroDetails) {
 	const [isEditing, setIsEditing] = useState(false);
 	const [formData, setFormData] = useState<superHero>({
@@ -25,6 +24,21 @@ export default function SuperheroDetails({
 	});
 	const [newFiles, setNewFiles] = useState<FileList | null>(null);
 	const [imagesToDelete, setImagesToDelete] = useState<string[]>([]);
+
+	const queryClient = useQueryClient();
+
+	const mutation = useMutation({
+		mutationFn: ({ id, body }: { id: string; body: FormData }) =>
+			editHeroRequest(id, body),
+		onSuccess: (_, variables) => {
+			setIsEditing(false);
+			setImagesToDelete([]);
+			setNewFiles(null);
+			queryClient.invalidateQueries({
+				queryKey: ["superheroDetails", variables.id],
+			});
+		},
+	});
 
 	useEffect(() => {
 		if (heroDetails) {
@@ -101,11 +115,7 @@ export default function SuperheroDetails({
 			}
 		}
 
-		await editHeroRequest(id, formDataToSend);
-		getUpdatedHeroDetails();
-		setIsEditing(false);
-		setImagesToDelete([]);
-		setNewFiles(null);
+		mutation.mutate({ id, body: formDataToSend });
 	};
 
 	if (!heroDetails) return;

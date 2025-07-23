@@ -1,24 +1,22 @@
 import { deleteHeroRequest } from "../api";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 type PopUpProps = {
 	closeModal: () => void;
-	onDelete: (id: string) => void;
 	id: string | undefined;
 };
 
-export default function DeletePopUp({ closeModal, onDelete, id }: PopUpProps) {
-	const handleDeleteHero = async (
-		e: React.MouseEvent,
-		id: string | undefined
-	) => {
-		e.preventDefault();
-		e.stopPropagation();
+export default function DeletePopUp({ closeModal, id }: PopUpProps) {
+	const queryClient = useQueryClient();
 
-		if (id) {
-			await deleteHeroRequest(id);
-			onDelete(id);
-		}
-	};
+	const mutation = useMutation({
+		mutationFn: (id: string) => deleteHeroRequest(id),
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ["superheroes"] })
+		},
+	});
+
+	if (!id) return;
 
 	return (
 		<div className="flex flex-col gap-4">
@@ -26,7 +24,7 @@ export default function DeletePopUp({ closeModal, onDelete, id }: PopUpProps) {
 			<div className="flex justify-center gap-4">
 				<button
 					className="popUpButton"
-					onClick={(e) => handleDeleteHero(e, id)}
+					onClick={() => mutation.mutate(id)}
 				>
 					Delete
 				</button>

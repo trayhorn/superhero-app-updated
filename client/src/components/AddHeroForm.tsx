@@ -1,11 +1,10 @@
-import type { superHero } from "../types/types";
 import { Formik, Form } from "formik";
 import type { FormikHelpers } from "formik";
 import * as Yup from "yup";
-import { AxiosError } from "axios";
-import { addHeroRequest, getAllHerousRequest } from "../api";
+import { addHeroRequest } from "../api";
 import constructFormData from "../helpers/constructFormData";
 import FormikField from "./FormikField";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export type HeroFormValues = {
 	nickname: string;
@@ -17,7 +16,6 @@ export type HeroFormValues = {
 }
 
 type Form = {
-	handleHeroesUpdate: (allHeroes: superHero[]) => void;
 	closeModal: () => void;
 };
 
@@ -30,9 +28,20 @@ const validationSchema = Yup.object({
 });
 
 export default function AddHeroForm({
-  handleHeroesUpdate,
   closeModal
 }: Form) {
+	const queryClient = useQueryClient();
+
+	const mutation = useMutation({
+		mutationFn: (values: FormData) => addHeroRequest(values),
+		onSuccess: () => {
+			closeModal();
+			queryClient.invalidateQueries({ queryKey: ["superheroes"] });
+		},
+		onError: (error) => alert(error.message),
+	})
+
+
   const handleFileChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     setFieldValue: FormikHelpers<HeroFormValues>["setFieldValue"]
@@ -58,23 +67,15 @@ export default function AddHeroForm({
       setFieldValue("images", files);
     }
 	};
-	
+
 	const handleFormSubmit = async (
 		values: HeroFormValues,
 		actions: FormikHelpers<HeroFormValues>
 	) => {
 		const formData = constructFormData(values);
 
-		try {
-			await addHeroRequest(formData);
-			const { data } = await getAllHerousRequest(1);
-			handleHeroesUpdate(data.superheroes);
-			closeModal();
-			actions.resetForm();
-		} catch (error) {
-			const err = error as AxiosError<{ message: string }>;
-			alert(err.response?.data?.message || "Error adding hero");
-		}
+		mutation.mutate(formData);
+		actions.resetForm();
 	};
 
   return (

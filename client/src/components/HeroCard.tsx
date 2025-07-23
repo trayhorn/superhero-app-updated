@@ -7,10 +7,9 @@ import Tooltip from "./Tooltip";
 
 type HeroCard = {
 	heroData: superHero;
-	onDelete: (id: string) => void;
 };
 
-export default function HeroCard({ heroData, onDelete }: HeroCard) {
+export default function HeroCard({ heroData }: HeroCard) {
 	const { isModalOpen, openModal, closeModal } = useModal();
 	const { _id, nickname, thumbnail } = heroData;
 
@@ -44,7 +43,7 @@ export default function HeroCard({ heroData, onDelete }: HeroCard) {
 				<Tooltip />
 			</div>
 			<ModalComponent isModalOpen={isModalOpen} closeModal={closeModal}>
-				<DeletePopUp closeModal={closeModal} onDelete={onDelete} id={_id} />
+				<DeletePopUp closeModal={closeModal} id={_id} />
 			</ModalComponent>
 		</li>
 	);
