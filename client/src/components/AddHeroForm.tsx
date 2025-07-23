@@ -19,7 +19,6 @@ export type HeroFormValues = {
 type Form = {
 	handleHeroesUpdate: (allHeroes: superHero[]) => void;
 	closeModal: () => void;
-	lastPageCheck: () => void;
 };
 
 const validationSchema = Yup.object({
@@ -32,8 +31,7 @@ const validationSchema = Yup.object({
 
 export default function AddHeroForm({
   handleHeroesUpdate,
-  closeModal,
-  lastPageCheck
+  closeModal
 }: Form) {
   const handleFileChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -71,7 +69,6 @@ export default function AddHeroForm({
 			await addHeroRequest(formData);
 			const { data } = await getAllHerousRequest(1);
 			handleHeroesUpdate(data.superheroes);
-			lastPageCheck();
 			closeModal();
 			actions.resetForm();
 		} catch (error) {
